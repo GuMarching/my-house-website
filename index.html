@@ -336,21 +336,38 @@
             const today = new Date().toISOString().split('T')[0];
             const analyticsDocRef = doc(db, `artifacts/${appId}/public/data/analytics`, 'summary');
 
-            // --- Record a new visit using a more robust method ---
+            // --- Record a new visit (Check-then-Write method) ---
             async function recordVisit() {
                 try {
-                    // setDoc with { merge: true } will create the document if it doesn't exist,
-                    // or update it if it does. This is safer than get() then set()/update().
-                    await setDoc(analyticsDocRef, {
-                        totalViews: increment(1),
-                        lastVisit: serverTimestamp(),
-                        dailyStats: {
-                            [today]: {
-                                views: increment(1)
-                            }
+                    const docSnap = await getDoc(analyticsDocRef);
+                    if (docSnap.exists()) {
+                        // If document exists, update it.
+                        const updates = {
+                            totalViews: increment(1),
+                            lastVisit: serverTimestamp(),
+                            [`dailyStats.${today}.views`]: increment(1)
+                        };
+                        // If it's a new day, we need to initialize the timeSpent for today
+                        if (!docSnap.data().dailyStats?.[today]) {
+                            updates[`dailyStats.${today}.totalTimeSpent`] = 0;
                         }
-                    }, { merge: true });
-                    console.log("Visit recorded successfully.");
+                        await updateDoc(analyticsDocRef, updates);
+                        console.log("Analytics document updated.");
+                    } else {
+                        // If document doesn't exist, create it with initial data.
+                        await setDoc(analyticsDocRef, {
+                            totalViews: 1,
+                            totalTimeSpent: 0,
+                            lastVisit: serverTimestamp(),
+                            dailyStats: {
+                                [today]: {
+                                    views: 1,
+                                    totalTimeSpent: 0
+                                }
+                            }
+                        });
+                        console.log("Analytics document created.");
+                    }
                 } catch (error) {
                     console.error('Error recording visit:', error);
                 }
@@ -361,15 +378,11 @@
                 const timeSpent = Math.floor((Date.now() - startTime) / 1000);
                 if (timeSpent > 5) {
                     try {
-                        // Also use setDoc with merge to safely update nested objects
-                        await setDoc(analyticsDocRef, {
+                        // This update assumes the document and today's stats object already exist.
+                        await updateDoc(analyticsDocRef, {
                             totalTimeSpent: increment(timeSpent),
-                            dailyStats: {
-                                [today]: {
-                                    totalTimeSpent: increment(timeSpent)
-                                }
-                            }
-                        }, { merge: true });
+                            [`dailyStats.${today}.totalTimeSpent`]: increment(timeSpent)
+                        });
                          console.log(`Time spent (${timeSpent}s) recorded.`);
                     } catch (error) {
                         console.error('Error updating time spent:', error);
@@ -384,7 +397,7 @@
             onSnapshot(analyticsDocRef, (doc) => {
                 if (doc.exists()) {
                     const data = doc.data();
-                    const todayStats = data.dailyStats?.[today] || { views: 0 };
+                    const todayStats = data.dailyStats?.[today] || { views: 0, totalTimeSpent: 0 };
                     const totalViews = data.totalViews || 0;
                     const totalTime = data.totalTimeSpent || 0;
 
