@@ -212,7 +212,7 @@
                     <p id="avg-duration" class="text-4xl font-bold text-yellow-600 mt-2">0 วินาที</p>
                 </div>
             </div>
-            <p id="last-visit" class="text-center text-gray-500 mt-4 text-sm">ยังไม่มีข้อมูลการเข้าชมล่าสุด</p>
+            <p id="last-visit" class="text-center text-gray-500 mt-4 text-sm">กำลังโหลดข้อมูล...</p>
         </section>
 
 
@@ -293,7 +293,6 @@
         import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- Firebase Configuration ---
-        // These variables are automatically provided by the environment.
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'pruksa-house-listing-dev';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -306,20 +305,20 @@
             auth = getAuth(app);
         } catch (error) {
             console.error("Firebase initialization failed:", error);
-            // Hide analytics section if Firebase fails
             document.querySelector('section.mt-12').style.display = 'none';
-            return; // Stop execution if Firebase can't be initialized
+            return;
         }
 
         // --- Authentication ---
         async function authenticate() {
             try {
+                if (auth.currentUser) return; // Already authenticated
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
                 } else {
                     await signInAnonymously(auth);
                 }
-                console.log("Authenticated successfully. UID:", auth.currentUser.uid);
+                console.log("Authenticated successfully.");
             } catch (error) {
                 console.error("Authentication failed:", error);
             }
@@ -329,60 +328,68 @@
         document.addEventListener('DOMContentLoaded', async () => {
             await authenticate();
             if (!auth.currentUser) {
-                console.error("User is not authenticated. Analytics will not work.");
+                console.error("Authentication failed, analytics disabled.");
                 return;
             }
 
             const startTime = Date.now();
-            const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-            
-            // Define the path to the analytics document in Firestore
+            const today = new Date().toISOString().split('T')[0];
             const analyticsDocRef = doc(db, `artifacts/${appId}/public/data/analytics`, 'summary');
 
-            // --- Increment Visitor Count ---
+            // --- Record a new visit ---
             async function recordVisit() {
                 try {
-                    // Use setDoc with merge to create or update the document
-                    // This is an atomic operation that handles both cases gracefully
-                    const dailyStatsPath = `dailyStats.${today}.views`;
-                    await setDoc(analyticsDocRef, {
-                        totalViews: increment(1),
-                        lastVisit: serverTimestamp(),
-                        dailyStats: {
-                            [today]: {
-                                views: increment(1)
+                    const docSnap = await getDoc(analyticsDocRef);
+                    if (docSnap.exists()) {
+                        // Document exists, update it
+                        const updates = {
+                            totalViews: increment(1),
+                            lastVisit: serverTimestamp(),
+                            [`dailyStats.${today}.views`]: increment(1)
+                        };
+                        await updateDoc(analyticsDocRef, updates);
+                        console.log("Visit updated.");
+                    } else {
+                        // Document doesn't exist, create it
+                        await setDoc(analyticsDocRef, {
+                            totalViews: 1,
+                            totalTimeSpent: 0,
+                            lastVisit: serverTimestamp(),
+                            dailyStats: {
+                                [today]: {
+                                    views: 1,
+                                    totalTimeSpent: 0
+                                }
                             }
-                        }
-                    }, { merge: true });
+                        });
+                        console.log("Initial visit recorded.");
+                    }
                 } catch (error) {
                     console.error('Error recording visit:', error);
                 }
             }
 
-            // --- Track Time Spent ---
+            // --- Track time spent on page ---
             async function trackTimeSpent() {
-                const timeSpent = Math.floor((Date.now() - startTime) / 1000); // in seconds
-                
-                if (timeSpent > 5) { // Only record if user spent more than 5 seconds
+                const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+                if (timeSpent > 5) {
                     try {
-                        const dailyTimeSpentPath = `dailyStats.${today}.totalTimeSpent`;
                         await updateDoc(analyticsDocRef, {
                             totalTimeSpent: increment(timeSpent),
-                            [dailyTimeSpentPath]: increment(timeSpent)
+                            [`dailyStats.${today}.totalTimeSpent`]: increment(timeSpent)
                         });
+                         console.log(`Time spent (${timeSpent}s) recorded.`);
                     } catch (error) {
+                        // This might fail if the doc doesn't exist, but recordVisit should have created it.
                         console.error('Error updating time spent:', error);
                     }
                 }
             }
             
-            // Record the visit as soon as the page loads
             recordVisit();
-            
-            // Add event listener to track time when the user leaves the page
             window.addEventListener('beforeunload', trackTimeSpent);
 
-            // --- Real-time updates for the UI ---
+            // --- Update UI with real-time data ---
             onSnapshot(analyticsDocRef, (doc) => {
                 if (doc.exists()) {
                     const data = doc.data();
@@ -390,32 +397,24 @@
                     const totalViews = data.totalViews || 0;
                     const totalTime = data.totalTimeSpent || 0;
 
-                    // Update UI elements
                     document.getElementById('today-visitors').textContent = todayStats.views;
                     document.getElementById('total-visitors').textContent = totalViews;
 
-                    // Calculate and display average duration
                     if (totalViews > 0) {
                         const avgSeconds = Math.round(totalTime / totalViews);
                         const minutes = Math.floor(avgSeconds / 60);
                         const seconds = avgSeconds % 60;
-                        if (minutes > 0) {
-                            document.getElementById('avg-duration').textContent = `${minutes} นาที ${seconds} วิ`;
-                        } else {
-                            document.getElementById('avg-duration').textContent = `${seconds} วินาที`;
-                        }
+                        document.getElementById('avg-duration').textContent = minutes > 0 ? `${minutes} นาที ${seconds} วิ` : `${seconds} วินาที`;
                     } else {
                         document.getElementById('avg-duration').textContent = `0 วินาที`;
                     }
                     
-                    // Display last visit timestamp
                     if (data.lastVisit) {
                         const lastVisitDate = data.lastVisit.toDate();
                         document.getElementById('last-visit').textContent = `เข้าชมล่าสุด: ${lastVisitDate.toLocaleString('th-TH')}`;
                     }
-
                 } else {
-                    console.log("No analytics data found yet.");
+                     document.getElementById('last-visit').textContent = `ยังไม่มีข้อมูลการเข้าชม`;
                 }
             }, (error) => {
                 console.error("Error listening to analytics data:", error);
