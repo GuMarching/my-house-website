@@ -336,34 +336,21 @@
             const today = new Date().toISOString().split('T')[0];
             const analyticsDocRef = doc(db, `artifacts/${appId}/public/data/analytics`, 'summary');
 
-            // --- Record a new visit ---
+            // --- Record a new visit using a more robust method ---
             async function recordVisit() {
                 try {
-                    const docSnap = await getDoc(analyticsDocRef);
-                    if (docSnap.exists()) {
-                        // Document exists, update it
-                        const updates = {
-                            totalViews: increment(1),
-                            lastVisit: serverTimestamp(),
-                            [`dailyStats.${today}.views`]: increment(1)
-                        };
-                        await updateDoc(analyticsDocRef, updates);
-                        console.log("Visit updated.");
-                    } else {
-                        // Document doesn't exist, create it
-                        await setDoc(analyticsDocRef, {
-                            totalViews: 1,
-                            totalTimeSpent: 0,
-                            lastVisit: serverTimestamp(),
-                            dailyStats: {
-                                [today]: {
-                                    views: 1,
-                                    totalTimeSpent: 0
-                                }
+                    // setDoc with { merge: true } will create the document if it doesn't exist,
+                    // or update it if it does. This is safer than get() then set()/update().
+                    await setDoc(analyticsDocRef, {
+                        totalViews: increment(1),
+                        lastVisit: serverTimestamp(),
+                        dailyStats: {
+                            [today]: {
+                                views: increment(1)
                             }
-                        });
-                        console.log("Initial visit recorded.");
-                    }
+                        }
+                    }, { merge: true });
+                    console.log("Visit recorded successfully.");
                 } catch (error) {
                     console.error('Error recording visit:', error);
                 }
@@ -374,13 +361,17 @@
                 const timeSpent = Math.floor((Date.now() - startTime) / 1000);
                 if (timeSpent > 5) {
                     try {
-                        await updateDoc(analyticsDocRef, {
+                        // Also use setDoc with merge to safely update nested objects
+                        await setDoc(analyticsDocRef, {
                             totalTimeSpent: increment(timeSpent),
-                            [`dailyStats.${today}.totalTimeSpent`]: increment(timeSpent)
-                        });
+                            dailyStats: {
+                                [today]: {
+                                    totalTimeSpent: increment(timeSpent)
+                                }
+                            }
+                        }, { merge: true });
                          console.log(`Time spent (${timeSpent}s) recorded.`);
                     } catch (error) {
-                        // This might fail if the doc doesn't exist, but recordVisit should have created it.
                         console.error('Error updating time spent:', error);
                     }
                 }
