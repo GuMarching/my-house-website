@@ -9,6 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) - อัปเดต ID เรียบร้อยแล้ว -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRM1C5N8JZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-KRM1C5N8JZ'); 
+    </script>
+    
     <style>
         body {
             font-family: 'Kanit', sans-serif;
@@ -194,28 +205,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Visitor Analytics Section -->
-        <section class="mt-12 bg-white text-gray-800 rounded-lg shadow-lg p-8">
-            <h2 class="text-3xl font-bold text-center mb-6">📈 สถิติผู้เข้าชม</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div class="bg-blue-50 p-6 rounded-lg">
-                    <p class="text-xl text-blue-800 font-semibold">ผู้เข้าชมวันนี้</p>
-                    <p id="today-visitors" class="text-4xl font-bold text-blue-600 mt-2">0</p>
-                </div>
-                <div class="bg-green-50 p-6 rounded-lg">
-                    <p class="text-xl text-green-800 font-semibold">ผู้เข้าชมทั้งหมด</p>
-                    <p id="total-visitors" class="text-4xl font-bold text-green-600 mt-2">0</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-lg">
-                    <p class="text-xl text-yellow-800 font-semibold">เวลาเข้าชมเฉลี่ย</p>
-                    <p id="avg-duration" class="text-4xl font-bold text-yellow-600 mt-2">0 วินาที</p>
-                </div>
-            </div>
-            <p id="last-visit" class="text-center text-gray-500 mt-4 text-sm">กำลังโหลดข้อมูล...</p>
-        </section>
-
-
+        
         <!-- Contact Section -->
         <footer class="mt-12 bg-gray-800 text-white rounded-lg shadow-lg p-8 text-center">
             <h2 class="text-3xl font-bold">สนใจติดต่อสอบถาม</h2>
@@ -283,147 +273,6 @@
                 modal.style.display = "none";
             }
         }
-    </script>
-
-    <!-- Firebase SDK (Modular v9) -->
-    <script type="module">
-        // Import functions from the SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- Firebase Configuration ---
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'pruksa-house-listing-dev';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        // --- Initialize Firebase ---
-        let app, db, auth;
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-        } catch (error) {
-            console.error("Firebase initialization failed:", error);
-            document.querySelector('section.mt-12').style.display = 'none';
-            return;
-        }
-
-        // --- Authentication ---
-        async function authenticate() {
-            try {
-                if (auth.currentUser) return; // Already authenticated
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                console.log("Authenticated successfully.");
-            } catch (error) {
-                console.error("Authentication failed:", error);
-            }
-        }
-
-        // --- Analytics Logic ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            await authenticate();
-            if (!auth.currentUser) {
-                console.error("Authentication failed, analytics disabled.");
-                return;
-            }
-
-            const startTime = Date.now();
-            const today = new Date().toISOString().split('T')[0];
-            const analyticsDocRef = doc(db, `artifacts/${appId}/public/data/analytics`, 'summary');
-
-            // --- Record a new visit (Check-then-Write method) ---
-            async function recordVisit() {
-                try {
-                    const docSnap = await getDoc(analyticsDocRef);
-                    if (docSnap.exists()) {
-                        // If document exists, update it.
-                        const updates = {
-                            totalViews: increment(1),
-                            lastVisit: serverTimestamp(),
-                            [`dailyStats.${today}.views`]: increment(1)
-                        };
-                        // If it's a new day, we need to initialize the timeSpent for today
-                        if (!docSnap.data().dailyStats?.[today]) {
-                            updates[`dailyStats.${today}.totalTimeSpent`] = 0;
-                        }
-                        await updateDoc(analyticsDocRef, updates);
-                        console.log("Analytics document updated.");
-                    } else {
-                        // If document doesn't exist, create it with initial data.
-                        await setDoc(analyticsDocRef, {
-                            totalViews: 1,
-                            totalTimeSpent: 0,
-                            lastVisit: serverTimestamp(),
-                            dailyStats: {
-                                [today]: {
-                                    views: 1,
-                                    totalTimeSpent: 0
-                                }
-                            }
-                        });
-                        console.log("Analytics document created.");
-                    }
-                } catch (error) {
-                    console.error('Error recording visit:', error);
-                }
-            }
-
-            // --- Track time spent on page ---
-            async function trackTimeSpent() {
-                const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-                if (timeSpent > 5) {
-                    try {
-                        // This update assumes the document and today's stats object already exist.
-                        await updateDoc(analyticsDocRef, {
-                            totalTimeSpent: increment(timeSpent),
-                            [`dailyStats.${today}.totalTimeSpent`]: increment(timeSpent)
-                        });
-                         console.log(`Time spent (${timeSpent}s) recorded.`);
-                    } catch (error) {
-                        console.error('Error updating time spent:', error);
-                    }
-                }
-            }
-            
-            recordVisit();
-            window.addEventListener('beforeunload', trackTimeSpent);
-
-            // --- Update UI with real-time data ---
-            onSnapshot(analyticsDocRef, (doc) => {
-                if (doc.exists()) {
-                    const data = doc.data();
-                    const todayStats = data.dailyStats?.[today] || { views: 0, totalTimeSpent: 0 };
-                    const totalViews = data.totalViews || 0;
-                    const totalTime = data.totalTimeSpent || 0;
-
-                    document.getElementById('today-visitors').textContent = todayStats.views;
-                    document.getElementById('total-visitors').textContent = totalViews;
-
-                    if (totalViews > 0) {
-                        const avgSeconds = Math.round(totalTime / totalViews);
-                        const minutes = Math.floor(avgSeconds / 60);
-                        const seconds = avgSeconds % 60;
-                        document.getElementById('avg-duration').textContent = minutes > 0 ? `${minutes} นาที ${seconds} วิ` : `${seconds} วินาที`;
-                    } else {
-                        document.getElementById('avg-duration').textContent = `0 วินาที`;
-                    }
-                    
-                    if (data.lastVisit) {
-                        const lastVisitDate = data.lastVisit.toDate();
-                        document.getElementById('last-visit').textContent = `เข้าชมล่าสุด: ${lastVisitDate.toLocaleString('th-TH')}`;
-                    }
-                } else {
-                     document.getElementById('last-visit').textContent = `ยังไม่มีข้อมูลการเข้าชม`;
-                }
-            }, (error) => {
-                console.error("Error listening to analytics data:", error);
-            });
-        });
     </script>
 </body>
 </html>
