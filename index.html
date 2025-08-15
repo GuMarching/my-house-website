@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
             font-family: 'Kanit', sans-serif;
             background-color: #f4f7f6;
         }
+
         .icon-card {
             background-color: white;
             border-radius: 0.75rem;
@@ -22,9 +24,11 @@
             transition: transform 0.2s;
             height: 100%;
         }
+
         .icon-card:hover {
             transform: translateY(-5px);
         }
+
         .gallery-thumbnail {
             cursor: pointer;
             border: 2px solid transparent;
@@ -32,27 +36,30 @@
             aspect-ratio: 3 / 2;
             object-fit: cover;
         }
+
         .gallery-thumbnail.active,
         .gallery-thumbnail:hover {
             border-color: #2563eb;
         }
+
         .main-image {
             aspect-ratio: 4 / 3;
             object-fit: cover;
         }
+
         /* Modal Styles */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 50; 
+            display: none;
+            position: fixed;
+            z-index: 50;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.9);
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
         }
+
         .modal-content {
             margin: auto;
             display: block;
@@ -63,6 +70,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         .close-modal {
             position: absolute;
             top: 15px;
@@ -75,6 +83,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
@@ -96,8 +105,322 @@
             <div class="lg:col-span-3">
                 <!-- Image Gallery -->
                 <div class="bg-white rounded-lg shadow-lg p-4">
-                    <img id="mainImage" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer">
+                    <img id="mainImage" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
                     <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/k2sMZp3d/image.jpg')" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพบ้าน 1" class="gallery-thumbnail active rounded w-full">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/rGKRgpxy/1.jpg')" src="https://i.ibb.co/rGKRgpxy/1.jpg" alt="ภาพบ้าน 2" class="gallery-thumbnail rounded w-full">
-                        <img onclick="changeImage(this
+                        <img onclick="changeImage(this, 'https://i.ibb.co/k2sMZp3d/image.jpg')" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพบ้าน 1" class="gallery-thumbnail active rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/rGKRgpxy/1.jpg')" src="https://i.ibb.co/rGKRgpxy/1.jpg" alt="ภาพบ้าน 2" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/nNXp61QG/2.jpg')" src="https://i.ibb.co/nNXp61QG/2.jpg" alt="ภาพบ้าน 3" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/whtjRF3c/2.jpg')" src="https://i.ibb.co/whtjRF3c/2.jpg" alt="ภาพบ้าน 4" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/HD2x15KP/image.jpg')" src="https://i.ibb.co/HD2x15KP/image.jpg" alt="ภาพบ้าน 5" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/HT9G2xHw/2.jpg')" src="https://i.ibb.co/HT9G2xHw/2.jpg" alt="ภาพบ้าน 6" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/NnrNKXRT/image.jpg')" src="https://i.ibb.co/NnrNKXRT/image.jpg" alt="ภาพบ้าน 7" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/k6SJMDqX/image.jpg')" src="https://i.ibb.co/k6SJMDqX/image.jpg" alt="ภาพบ้าน 8" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/CKZ5Skt1/image.jpg')" src="https://i.ibb.co/CKZ5Skt1/image.jpg" alt="ภาพบ้าน 9" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/84gTwndH/image.jpg')" src="https://i.ibb.co/84gTwndH/image.jpg" alt="ภาพบ้าน 10" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/Cs3qKnyN/1.jpg')" src="https://i.ibb.co/Cs3qKnyN/1.jpg" alt="ภาพบ้าน 11" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/9Hj27t3c/image.jpg')" src="https://i.ibb.co/9Hj27t3c/image.jpg" alt="ภาพบ้าน 12" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/M567Qh2v/image.jpg')" src="https://i.ibb.co/M567Qh2v/image.jpg" alt="ภาพบ้าน 13" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/Mk1ZkhSC/image.jpg')" src="https://i.ibb.co/Mk1ZkhSC/image.jpg" alt="ภาพบ้าน 14" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/5hg2ZdY7/image.jpg')" src="https://i.ibb.co/5hg2ZdY7/image.jpg" alt="ภาพบ้าน 15" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/ZphCGndb/image.jpg')" src="https://i.ibb.co/ZphCGndb/image.jpg" alt="ภาพบ้าน 16" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/svKMQcNY/image.jpg')" src="https://i.ibb.co/svKMQcNY/image.jpg" alt="ภาพบ้าน 17" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/CK540vN2/1550483797534.webp')" src="https://i.ibb.co/CK540vN2/1550483797534.webp" alt="ภาพบ้าน 18" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/4RW3SPJ3/1550483798550.webp')" src="https://i.ibb.co/4RW3SPJ3/1550483798550.webp" alt="ภาพบ้าน 19" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                        <img onclick="changeImage(this, 'https://i.ibb.co/XfGc56Gw/12.jpg')" src="https://i.ibb.co/XfGc56Gw/12.jpg" alt="ภาพบ้าน 20" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (Details) -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-6 h-full">
+                    <h2 class="text-3xl font-bold text-gray-800 border-b-4 border-blue-500 pb-2 mb-4">รายละเอียดบ้าน</h2>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🏠</span><strong>ประเภท:</strong>&nbsp;ทาวน์เฮาส์ 2 ชั้น (หลังกลาง)</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🗓️</span><strong>สร้างปี:</strong>&nbsp;2556</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">📐</span><strong>เนื้อที่:</strong>&nbsp;17.40 ตร.ว. (พื้นที่ใช้สอย 91.60 ตร.ม.)</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🛏️</span><strong>ฟังก์ชัน:</strong>&nbsp;3 นอน / 2 น้ำ / 1 โถง / 1 ครัว</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🚗</span><strong>ที่จอดรถ:</strong>&nbsp;1 คัน</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🛠️</span><strong>ต่อเติม:</strong>&nbsp;ห้องครัว, หลังคาหน้าบ้าน, มุ้งลวดเหล็กดัด</li>
+                        <li class="flex items-center"><span class="text-blue-500 mr-3">🛡️</span><strong>ส่วนกลาง:</strong>&nbsp;รปภ. 24 ชม., สวนสาธารณะ (261 บ./เดือน)</li>
+                    </ul>
+
+                    <h2 class="text-3xl font-bold text-gray-800 border-b-4 border-green-500 pb-2 mb-4 mt-8">ทำเลและสถานที่ใกล้เคียง</h2>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">📍</span>
+                            <div><strong>ติดถนนใหญ่:</strong> ทางเข้าหมู่บ้านติด ถ.ติวานนท์</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🏭</span>
+                            <div><strong>นิคมฯ บางกะดี:</strong> 2 กม.</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🛒</span>
+                            <div><strong>ตลาดพูนทรัพย์:</strong> 4 กม.</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🎓</span>
+                            <div><strong>ม.เทคโนโลยีปทุมธานี:</strong> 7 กม.</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🏥</span>
+                            <div><strong>รพ.ปทุมเวช:</strong> 11 กม.</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🛍️</span>
+                            <div><strong>ฟิวเจอร์พาร์ค รังสิต:</strong> 12 กม.</div>
+                        </li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🚌</span>
+                            <div><strong>รถสาธารณะ:</strong> สายรังสิต-บางกะดี ผ่านหน้าหมู่บ้าน</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- Promotions -->
+        <div class="mt-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">✨ โปรโมชั่นสุดพิเศษ ✨</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="icon-card flex flex-col items-center justify-center">
+                    <img src="https://i.ibb.co/dwkydG8s/2.png" alt="ฟรีค่าโอน" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <h3 class="font-semibold text-xl">ฟรีค่าโอน!</h3>
+                    <p class="text-md text-gray-500">(ยกเว้นค่าจดจำนอง)</p>
+                </div>
+                <div class="icon-card flex flex-col items-center justify-center">
+                    <img src="https://i.ibb.co/dsrT2xsM/1.png" alt="ฟรีแอร์" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <h3 class="font-semibold text-xl">ฟรีแอร์ 3 เครื่อง</h3>
+                    <p class="text-md text-gray-500">(ห้องนอน 2, ห้องโถง 1)</p>
+                </div>
+                <div class="icon-card flex flex-col items-center justify-center">
+                    <img src="https://i.ibb.co/wZ4g9G7w/3.png" alt="ฟรีทำความสะอาด" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <h3 class="font-semibold text-xl">ฟรีทำความสะอาด</h3>
+                    <p class="text-md text-gray-500">ก่อนเข้าอยู่</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visitor Analytics Section -->
+        <section class="mt-12 bg-white text-gray-800 rounded-lg shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-center mb-6">📈 สถิติผู้เข้าชม</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-blue-50 p-6 rounded-lg">
+                    <p class="text-xl text-blue-800 font-semibold">ผู้เข้าชมวันนี้</p>
+                    <p id="today-visitors" class="text-4xl font-bold text-blue-600 mt-2">0</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-lg">
+                    <p class="text-xl text-green-800 font-semibold">ผู้เข้าชมทั้งหมด</p>
+                    <p id="total-visitors" class="text-4xl font-bold text-green-600 mt-2">0</p>
+                </div>
+                <div class="bg-yellow-50 p-6 rounded-lg">
+                    <p class="text-xl text-yellow-800 font-semibold">เวลาเข้าชมเฉลี่ย</p>
+                    <p id="avg-duration" class="text-4xl font-bold text-yellow-600 mt-2">0 วินาที</p>
+                </div>
+            </div>
+            <p id="last-visit" class="text-center text-gray-500 mt-4 text-sm">ยังไม่มีข้อมูลการเข้าชมล่าสุด</p>
+        </section>
+
+
+        <!-- Contact Section -->
+        <footer class="mt-12 bg-gray-800 text-white rounded-lg shadow-lg p-8 text-center">
+            <h2 class="text-3xl font-bold">สนใจติดต่อสอบถาม</h2>
+            <p class="mt-2 text-gray-300">เจ้าของบ้านขายเอง ติดต่อได้โดยตรง</p>
+            <div class="mt-6 flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
+                <a href="tel:0917148380" class="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 text-lg flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                    </svg>
+                    คุณมาร์ช: 091-714-8380
+                </a>
+                <a href="tel:0864160529" class="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 text-lg flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                    </svg>
+                    คุณเฟิร์น: 086-416-0529
+                </a>
+                <div class="w-full md:w-auto bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full text-lg flex items-center justify-center gap-2 transition duration-300">
+                    <svg class="w-6 h-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#06C755">
+                        <title>LINE</title>
+                        <path d="M19.33 3H4.67C3.75 3 3 3.75 3 4.67v10.66c0 .92.75 1.67 1.67 1.67h3.33V21l5-4.17h6.33c.92 0 1.67-.75 1.67-1.67V4.67C21 3.75 20.25 3 19.33 3zM8 12.67H6.33V8H8v4.67zm4.67-1.17h-1.67V8h1.67v3.5zm4.66 1.17H15.66V8h1.67v1.17h1.67v1.16h-1.67V12.67z" />
+                    </svg>
+                    LINE ID: gumarching
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 mt-6">ที่ตั้ง: 88/288 หมู่บ้านพฤกษา 63/1, ต.บางกะดี, อ.เมืองปทุมธานี, จ.ปทุมธานี</p>
+        </footer>
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+
+    <script>
+        // Function to change the main image
+        function changeImage(thumbnailElement, newImageSrc) {
+            document.getElementById('mainImage').src = newImageSrc;
+            const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            thumbnailElement.classList.add('active');
+        }
+
+        // Modal script
+        var modal = document.getElementById("imageModal");
+        var mainImage = document.getElementById("mainImage");
+        var modalImg = document.getElementById("modalImage");
+        mainImage.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        }
+
+        var span = document.getElementsByClassName("close-modal")[0];
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close modal if clicked outside the image
+        modal.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- Firebase SDK (Modular v9) -->
+    <script type="module">
+        // Import functions from the SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase Configuration ---
+        // These variables are automatically provided by the environment.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'pruksa-house-listing-dev';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- Initialize Firebase ---
+        let app, db, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            // Hide analytics section if Firebase fails
+            document.querySelector('section.mt-12').style.display = 'none';
+            return; // Stop execution if Firebase can't be initialized
+        }
+
+        // --- Authentication ---
+        async function authenticate() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                console.log("Authenticated successfully. UID:", auth.currentUser.uid);
+            } catch (error) {
+                console.error("Authentication failed:", error);
+            }
+        }
+
+        // --- Analytics Logic ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await authenticate();
+            if (!auth.currentUser) {
+                console.error("User is not authenticated. Analytics will not work.");
+                return;
+            }
+
+            const startTime = Date.now();
+            const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+            
+            // Define the path to the analytics document in Firestore
+            const analyticsDocRef = doc(db, `artifacts/${appId}/public/data/analytics`, 'summary');
+
+            // --- Increment Visitor Count ---
+            async function recordVisit() {
+                try {
+                    // Use setDoc with merge to create or update the document
+                    // This is an atomic operation that handles both cases gracefully
+                    const dailyStatsPath = `dailyStats.${today}.views`;
+                    await setDoc(analyticsDocRef, {
+                        totalViews: increment(1),
+                        lastVisit: serverTimestamp(),
+                        dailyStats: {
+                            [today]: {
+                                views: increment(1)
+                            }
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error recording visit:', error);
+                }
+            }
+
+            // --- Track Time Spent ---
+            async function trackTimeSpent() {
+                const timeSpent = Math.floor((Date.now() - startTime) / 1000); // in seconds
+                
+                if (timeSpent > 5) { // Only record if user spent more than 5 seconds
+                    try {
+                        const dailyTimeSpentPath = `dailyStats.${today}.totalTimeSpent`;
+                        await updateDoc(analyticsDocRef, {
+                            totalTimeSpent: increment(timeSpent),
+                            [dailyTimeSpentPath]: increment(timeSpent)
+                        });
+                    } catch (error) {
+                        console.error('Error updating time spent:', error);
+                    }
+                }
+            }
+            
+            // Record the visit as soon as the page loads
+            recordVisit();
+            
+            // Add event listener to track time when the user leaves the page
+            window.addEventListener('beforeunload', trackTimeSpent);
+
+            // --- Real-time updates for the UI ---
+            onSnapshot(analyticsDocRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    const todayStats = data.dailyStats?.[today] || { views: 0 };
+                    const totalViews = data.totalViews || 0;
+                    const totalTime = data.totalTimeSpent || 0;
+
+                    // Update UI elements
+                    document.getElementById('today-visitors').textContent = todayStats.views;
+                    document.getElementById('total-visitors').textContent = totalViews;
+
+                    // Calculate and display average duration
+                    if (totalViews > 0) {
+                        const avgSeconds = Math.round(totalTime / totalViews);
+                        const minutes = Math.floor(avgSeconds / 60);
+                        const seconds = avgSeconds % 60;
+                        if (minutes > 0) {
+                            document.getElementById('avg-duration').textContent = `${minutes} นาที ${seconds} วิ`;
+                        } else {
+                            document.getElementById('avg-duration').textContent = `${seconds} วินาที`;
+                        }
+                    } else {
+                        document.getElementById('avg-duration').textContent = `0 วินาที`;
+                    }
+                    
+                    // Display last visit timestamp
+                    if (data.lastVisit) {
+                        const lastVisitDate = data.lastVisit.toDate();
+                        document.getElementById('last-visit').textContent = `เข้าชมล่าสุด: ${lastVisitDate.toLocaleString('th-TH')}`;
+                    }
+
+                } else {
+                    console.log("No analytics data found yet.");
+                }
+            }, (error) => {
+                console.error("Error listening to analytics data:", error);
+            });
+        });
+    </script>
+</body>
+</html>
