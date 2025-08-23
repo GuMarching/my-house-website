@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Google tag (gtag.js) - อัปเดต ID เรียบร้อยแล้ว -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRM1C5N8JZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -52,10 +52,47 @@
         .gallery-thumbnail:hover {
             border-color: #2563eb;
         }
+        
+        .gallery-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.2s;
+            background-color: #e5e7eb;
+            color: #374151;
+            cursor: pointer;
+        }
+        
+        .gallery-tab:hover {
+            background-color: #d1d5db;
+        }
+
+        .gallery-tab.active {
+            background-color: #1d4ed8;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
 
         .main-image {
             aspect-ratio: 4 / 3;
             object-fit: cover;
+        }
+
+        /* Responsive video embed */
+        .aspect-video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .aspect-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         /* Modal Styles */
@@ -69,17 +106,19 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             margin: auto;
             display: block;
-            width: 80%;
-            max-width: 700px;
+            width: 90%;
+            max-width: 800px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            border-radius: 0.5rem;
         }
 
         .close-modal {
@@ -109,35 +148,46 @@
             <p class="text-gray-500 mt-2">(เจ้าของขายเอง ราคาตามสภาพจริง)</p>
         </header>
 
+        <!-- Video Section -->
+        <section class="my-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🎬 ชมวิดีโอบรรยากาศบ้าน 🎬</h2>
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <div class="aspect-video-container">
+                     <iframe 
+                        src="https://www.youtube.com/embed/-E0OrHVpD9A" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                     </iframe>
+                </div>
+            </div>
+        </section>
+
         <!-- Main Content -->
         <main class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-            <!-- Left Column (Gallery & Promotions) -->
+            <!-- Left Column (Gallery) -->
             <div class="lg:col-span-3">
                 <!-- Image Gallery -->
-                <div class="bg-white rounded-lg shadow-lg p-4">
-                    <img id="mainImage" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
-                    <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/k2sMZp3d/image.jpg')" src="https://i.ibb.co/k2sMZp3d/image.jpg" alt="ภาพบ้าน 1" class="gallery-thumbnail active rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/rGKRgpxy/1.jpg')" src="https://i.ibb.co/rGKRgpxy/1.jpg" alt="ภาพบ้าน 2" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/nNXp61QG/2.jpg')" src="https://i.ibb.co/nNXp61QG/2.jpg" alt="ภาพบ้าน 3" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/whtjRF3c/2.jpg')" src="https://i.ibb.co/whtjRF3c/2.jpg" alt="ภาพบ้าน 4" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/HD2x15KP/image.jpg')" src="https://i.ibb.co/HD2x15KP/image.jpg" alt="ภาพบ้าน 5" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/HT9G2xHw/2.jpg')" src="https://i.ibb.co/HT9G2xHw/2.jpg" alt="ภาพบ้าน 6" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/NnrNKXRT/image.jpg')" src="https://i.ibb.co/NnrNKXRT/image.jpg" alt="ภาพบ้าน 7" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/k6SJMDqX/image.jpg')" src="https://i.ibb.co/k6SJMDqX/image.jpg" alt="ภาพบ้าน 8" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/CKZ5Skt1/image.jpg')" src="https://i.ibb.co/CKZ5Skt1/image.jpg" alt="ภาพบ้าน 9" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/84gTwndH/image.jpg')" src="https://i.ibb.co/84gTwndH/image.jpg" alt="ภาพบ้าน 10" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/Cs3qKnyN/1.jpg')" src="https://i.ibb.co/Cs3qKnyN/1.jpg" alt="ภาพบ้าน 11" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/9Hj27t3c/image.jpg')" src="https://i.ibb.co/9Hj27t3c/image.jpg" alt="ภาพบ้าน 12" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/M567Qh2v/image.jpg')" src="https://i.ibb.co/M567Qh2v/image.jpg" alt="ภาพบ้าน 13" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/Mk1ZkhSC/image.jpg')" src="https://i.ibb.co/Mk1ZkhSC/image.jpg" alt="ภาพบ้าน 14" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/5hg2ZdY7/image.jpg')" src="https://i.ibb.co/5hg2ZdY7/image.jpg" alt="ภาพบ้าน 15" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/ZphCGndb/image.jpg')" src="https://i.ibb.co/ZphCGndb/image.jpg" alt="ภาพบ้าน 16" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/svKMQcNY/image.jpg')" src="https://i.ibb.co/svKMQcNY/image.jpg" alt="ภาพบ้าน 17" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/CK540vN2/1550483797534.webp')" src="https://i.ibb.co/CK540vN2/1550483797534.webp" alt="ภาพบ้าน 18" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/4RW3SPJ3/1550483798550.webp')" src="https://i.ibb.co/4RW3SPJ3/1550483798550.webp" alt="ภาพบ้าน 19" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
-                        <img onclick="changeImage(this, 'https://i.ibb.co/XfGc56Gw/12.jpg')" src="https://i.ibb.co/XfGc56Gw/12.jpg" alt="ภาพบ้าน 20" class="gallery-thumbnail rounded w-full" onerror="this.onerror=null;this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb';">
+                <div class="bg-white rounded-lg shadow-lg p-4 sticky top-4">
+                    <img id="mainImage" src="https://i.ibb.co/HLtRHMKL/1.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
+                    
+                    <!-- Gallery Category Tabs -->
+                    <div id="gallery-tabs" class="flex flex-wrap justify-center gap-2 my-4">
+                        <button class="gallery-tab" onclick="filterGallery('front', this)">หน้าบ้าน</button>
+                        <button class="gallery-tab" onclick="filterGallery('hall', this)">ห้องโถง</button>
+                        <button class="gallery-tab" onclick="filterGallery('kitchen', this)">ห้องครัว</button>
+                        <button class="gallery-tab" onclick="filterGallery('bath_down', this)">ห้องน้ำ (ล่าง)</button>
+                        <button class="gallery-tab" onclick="filterGallery('hall_up', this)">โถง (บน)</button>
+                        <button class="gallery-tab" onclick="filterGallery('bed_small1', this)">ห้องนอนเล็ก 1</button>
+                        <button class="gallery-tab" onclick="filterGallery('bed_small2', this)">ห้องนอนเล็ก 2</button>
+                        <button class="gallery-tab" onclick="filterGallery('bed_main', this)">ห้องนอนใหญ่</button>
+                        <button class="gallery-tab" onclick="filterGallery('bath_up', this)">ห้องน้ำ (บน)</button>
+                    </div>
+
+                    <div id="thumbnail-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                        <!-- Thumbnails will be dynamically inserted here -->
                     </div>
                 </div>
             </div>
@@ -224,9 +274,8 @@
                     คุณเฟิร์น: 086-416-0529
                 </a>
                 <div class="w-full md:w-auto bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full text-lg flex items-center justify-center gap-2 transition duration-300">
-                    <svg class="w-6 h-6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#06C755">
-                        <title>LINE</title>
-                        <path d="M19.33 3H4.67C3.75 3 3 3.75 3 4.67v10.66c0 .92.75 1.67 1.67 1.67h3.33V21l5-4.17h6.33c.92 0 1.67-.75 1.67-1.67V4.67C21 3.75 20.25 3 19.33 3zM8 12.67H6.33V8H8v4.67zm4.67-1.17h-1.67V8h1.67v3.5zm4.66 1.17H15.66V8h1.67v1.17h1.67v1.16h-1.67V12.67z" />
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C7.029 3 3 7.029 3 12C3 16.971 7.029 21 12 21C16.971 21 21 16.971 21 12C21 7.029 16.971 3 12 3ZM16.039 14.505C15.589 15.225 14.869 15.685 14.039 15.775C13.539 15.825 13.119 15.645 12.789 15.345C12.179 14.785 10.909 13.885 9.49904 12.475C8.08904 11.065 7.18904 9.795 6.62904 9.185C6.32904 8.855 6.14904 8.435 6.19904 7.935C6.28904 7.105 6.74904 6.385 7.46904 5.935C7.65904 5.815 7.87904 5.755 8.09904 5.755C8.30904 5.755 8.50904 5.815 8.67904 5.925L10.429 7.015C10.849 7.275 11.009 7.795 10.829 8.245L10.369 9.405C10.249 9.695 10.299 10.035 10.509 10.245L11.549 11.285C11.759 11.495 12.099 11.545 12.389 11.425L13.549 10.965C13.999 10.785 14.519 10.945 14.779 11.365L15.869 13.115C16.129 13.535 16.079 14.075 15.759 14.425L15.429 14.755L16.039 14.505Z" fill="#06C755"/>
                     </svg>
                     LINE ID: gumarching
                 </div>
@@ -244,26 +293,131 @@
 
 
     <script>
-        // Function to change the main image
+        // --- Image Data ---
+        // Storing all image URLs in a structured object for easy management.
+        const imageGallery = {
+            front: [
+                'https://i.ibb.co/HLtRHMKL/1.jpg',
+                'https://i.ibb.co/5hCf2jhk/2.jpg',
+                'https://i.ibb.co/tpFpJwdH/3.jpg',
+                'https://i.ibb.co/bhN48mq/4.jpg',
+                'https://i.ibb.co/hJ0VMDPn/5.jpg',
+                'https://i.ibb.co/j96nL988/6.jpg'
+            ],
+            hall: [
+                'https://i.ibb.co/W452Zm8p/IMG-20250823-164508.jpg',
+                'https://i.ibb.co/HDRrw5XH/IMG-20250823-164517.jpg',
+                'https://i.ibb.co/3mgjQYb6/IMG-20250823-164527.jpg',
+                'https://i.ibb.co/vxDNFkCp/IMG-20250823-164545.jpg',
+                'https://i.ibb.co/wNt5yBtn/IMG-20250823-164548.jpg',
+                'https://i.ibb.co/v4r6kWCX/IMG-20250823-173022.jpg'
+            ],
+            kitchen: [
+                'https://i.ibb.co/Xx4cQLPJ/IMG-20250823-164622.jpg',
+                'https://i.ibb.co/6JyXQkJ3/IMG-20250823-164634.jpg',
+                'https://i.ibb.co/PvtNSz23/IMG-20250823-164638.jpg',
+                'https://i.ibb.co/hFw5LHY9/IMG-20250823-164642.jpg'
+            ],
+            bath_down: [
+                'https://i.ibb.co/hPV452h/IMG-20250823-164602.jpg'
+            ],
+            hall_up: [
+                'https://i.ibb.co/84Lf1NJY/IMG-20250823-143346.jpg',
+                'https://i.ibb.co/4gmrGj3Z/IMG-20250823-143632.jpg',
+                'https://i.ibb.co/z3rFWYD/IMG-20250823-143639.jpg',
+                'https://i.ibb.co/SWh8YsM/IMG-20250823-130317.jpg',
+                'https://i.ibb.co/G3pShqBt/IMG-20250823-130923.jpg'
+            ],
+            bed_small1: [
+                'https://i.ibb.co/Y43SjYDW/IMG-20250823-130236.jpg',
+                'https://i.ibb.co/JRxjmK5Z/IMG-20250823-130244.jpg',
+                'https://i.ibb.co/MDwcQPnD/IMG-20250823-130250.jpg'
+            ],
+            bed_small2: [
+                'https://i.ibb.co/whgrRk8W/IMG-20250823-130054.jpg',
+                'https://i.ibb.co/dJt0Y54r/IMG-20250823-130108.jpg',
+                'https://i.ibb.co/LDXvNQqw/IMG-20250823-130120.jpg',
+                'https://i.ibb.co/dSCs5Jj/IMG-20250823-130136.jpg',
+                'https://i.ibb.co/zVsdM4V9/IMG-20250823-130145.jpg',
+                'https://i.ibb.co/9m6gYRch/IMG-20250823-130150.jpg',
+                'https://i.ibb.co/Z1mjhcbN/IMG-20250823-130212.jpg'
+            ],
+            bed_main: [
+                'https://i.ibb.co/RG4KWn5d/IMG-20250823-130357.jpg',
+                'https://i.ibb.co/XrV9pY8Z/IMG-20250823-130502.jpg',
+                'https://i.ibb.co/FTdHrpJ/IMG-20250823-130607.jpg',
+                'https://i.ibb.co/9kKg5cSb/IMG-20250823-130611.jpg',
+                'https://i.ibb.co/s9hf025N/IMG-20250823-130615.jpg',
+                'https://i.ibb.co/RTGN28b3/IMG-20250823-131229.jpg',
+                'https://i.ibb.co/rSWD4G5/IMG-20250823-131235.jpg',
+                'https://i.ibb.co/pjKgN8dr/IMG-20250823-131243.jpg'
+            ],
+            bath_up: [
+                'https://i.ibb.co/fVQLWzpG/IMG-20250823-142435.jpg'
+            ]
+        };
+
+        const mainImage = document.getElementById('mainImage');
+        const thumbnailContainer = document.getElementById('thumbnail-container');
+        const galleryTabs = document.querySelectorAll('.gallery-tab');
+
+        // --- Gallery Functions ---
+
+        // Function to change the main image when a thumbnail is clicked
         function changeImage(thumbnailElement, newImageSrc) {
-            document.getElementById('mainImage').src = newImageSrc;
-            const thumbnails = document.querySelectorAll('.gallery-thumbnail');
-            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            mainImage.src = newImageSrc;
+            // Remove 'active' class from all thumbnails in the current view
+            const currentThumbnails = thumbnailContainer.querySelectorAll('.gallery-thumbnail');
+            currentThumbnails.forEach(thumb => thumb.classList.remove('active'));
+            // Add 'active' class to the clicked thumbnail
             thumbnailElement.classList.add('active');
         }
 
-        // Modal script
-        var modal = document.getElementById("imageModal");
-        var mainImage = document.getElementById("mainImage");
-        var modalImg = document.getElementById("modalImage");
+        // Function to filter and display thumbnails based on the selected category
+        function filterGallery(category, tabElement) {
+            // Clear existing thumbnails
+            thumbnailContainer.innerHTML = '';
+            
+            // Update active state for tabs
+            galleryTabs.forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+
+            // Get the images for the selected category
+            const images = imageGallery[category];
+            if (!images || images.length === 0) return;
+
+            // Create and append new thumbnails
+            images.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `ภาพ ${category} ${index + 1}`;
+                img.className = 'gallery-thumbnail rounded w-full';
+                // Add an error handler for broken image links
+                img.onerror = function() { this.onerror=null; this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb'; };
+                // Set the onclick event to call changeImage
+                img.setAttribute('onclick', `changeImage(this, '${src}')`);
+                thumbnailContainer.appendChild(img);
+            });
+
+            // Set the main image to the first image of the new category
+            // and activate the first thumbnail
+            if (thumbnailContainer.firstChild) {
+                mainImage.src = images[0];
+                thumbnailContainer.firstChild.classList.add('active');
+            }
+        }
+
+        // --- Modal Functions ---
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        
         mainImage.onclick = function() {
             modal.style.display = "block";
             modalImg.src = this.src;
         }
 
-        var span = document.getElementsByClassName("close-modal")[0];
-
-        span.onclick = function() {
+        const closeModalSpan = document.getElementsByClassName("close-modal")[0];
+        closeModalSpan.onclick = function() {
             modal.style.display = "none";
         }
 
@@ -273,6 +427,13 @@
                 modal.style.display = "none";
             }
         }
+        
+        // --- Initial Load ---
+        // Automatically display the first category ('front') when the page loads.
+        window.onload = function() {
+            filterGallery('front', galleryTabs[0]);
+        };
+
     </script>
 </body>
 </html>
