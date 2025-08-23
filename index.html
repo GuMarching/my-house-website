@@ -43,9 +43,14 @@
         .gallery-thumbnail {
             cursor: pointer;
             border: 2px solid transparent;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, opacity 0.3s;
             aspect-ratio: 3 / 2;
             object-fit: cover;
+            opacity: 0; /* Start as transparent for fade-in effect */
+        }
+        
+        .gallery-thumbnail.loaded {
+            opacity: 1; /* Fade in when loaded */
         }
 
         .gallery-thumbnail.active,
@@ -131,6 +136,13 @@
             transition: 0.3s;
             cursor: pointer;
         }
+        
+        #loader {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.125rem;
+            color: #4a5568;
+        }
     </style>
 </head>
 
@@ -158,7 +170,8 @@
                         title="YouTube video player" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
+                        allowfullscreen
+                        loading="lazy">
                      </iframe>
                 </div>
             </div>
@@ -171,7 +184,7 @@
             <div class="lg:col-span-3">
                 <!-- Image Gallery -->
                 <div class="bg-white rounded-lg shadow-lg p-4 sticky top-4">
-                    <img id="mainImage" src="https://i.ibb.co/HLtRHMKL/1.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
+                    <img id="mainImage" src="https://i.ibb.co/Cp4rfnwB/1.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" loading="eager" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
                     
                     <!-- Gallery Category Tabs -->
                     <div id="gallery-tabs" class="flex flex-wrap justify-center gap-2 my-4">
@@ -186,8 +199,11 @@
                         <button class="gallery-tab" onclick="filterGallery('bath_up', this)">ห้องน้ำ (บน)</button>
                     </div>
 
-                    <div id="thumbnail-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                        <!-- Thumbnails will be dynamically inserted here -->
+                    <div id="thumbnail-wrapper">
+                        <div id="loader" style="display: none;">กำลังโหลดรูปภาพ...</div>
+                        <div id="thumbnail-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                            <!-- Thumbnails will be dynamically inserted here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,17 +255,17 @@
             <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">✨ โปรโมชั่นสุดพิเศษ ✨</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="icon-card flex flex-col items-center justify-center">
-                    <img src="https://i.ibb.co/dwkydG8s/2.png" alt="ฟรีค่าโอน" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <img src="https://i.ibb.co/dwkydG8s/2.png" alt="ฟรีค่าโอน" class="w-60 h-60 mb-3 object-contain" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
                     <h3 class="font-semibold text-xl">ฟรีค่าโอน!</h3>
                     <p class="text-md text-gray-500">(ยกเว้นค่าจดจำนอง)</p>
                 </div>
                 <div class="icon-card flex flex-col items-center justify-center">
-                    <img src="https://i.ibb.co/dsrT2xsM/1.png" alt="ฟรีแอร์" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <img src="https://i.ibb.co/dsrT2xsM/1.png" alt="ฟรีแอร์" class="w-60 h-60 mb-3 object-contain" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
                     <h3 class="font-semibold text-xl">ฟรีแอร์ 3 เครื่อง</h3>
                     <p class="text-md text-gray-500">(ห้องนอน 2, ห้องโถง 1)</p>
                 </div>
                 <div class="icon-card flex flex-col items-center justify-center">
-                    <img src="https://i.ibb.co/wZ4g9G7w/3.png" alt="ฟรีทำความสะอาด" class="w-60 h-60 mb-3 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
+                    <img src="https://i.ibb.co/wZ4g9G7w/3.png" alt="ฟรีทำความสะอาด" class="w-60 h-60 mb-3 object-contain" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/240x240/ffffff/4a5568?text=Promotion';">
                     <h3 class="font-semibold text-xl">ฟรีทำความสะอาด</h3>
                     <p class="text-md text-gray-500">ก่อนเข้าอยู่</p>
                 </div>
@@ -294,113 +310,90 @@
 
     <script>
         // --- Image Data ---
-        // Storing all image URLs in a structured object for easy management.
         const imageGallery = {
-            front: [
-                'https://i.ibb.co/HLtRHMKL/1.jpg',
-                'https://i.ibb.co/5hCf2jhk/2.jpg',
-                'https://i.ibb.co/tpFpJwdH/3.jpg',
-                'https://i.ibb.co/bhN48mq/4.jpg',
-                'https://i.ibb.co/hJ0VMDPn/5.jpg',
-                'https://i.ibb.co/j96nL988/6.jpg'
-            ],
-            hall: [
-                'https://i.ibb.co/W452Zm8p/IMG-20250823-164508.jpg',
-                'https://i.ibb.co/HDRrw5XH/IMG-20250823-164517.jpg',
-                'https://i.ibb.co/3mgjQYb6/IMG-20250823-164527.jpg',
-                'https://i.ibb.co/vxDNFkCp/IMG-20250823-164545.jpg',
-                'https://i.ibb.co/wNt5yBtn/IMG-20250823-164548.jpg',
-                'https://i.ibb.co/v4r6kWCX/IMG-20250823-173022.jpg'
-            ],
-            kitchen: [
-                'https://i.ibb.co/Xx4cQLPJ/IMG-20250823-164622.jpg',
-                'https://i.ibb.co/6JyXQkJ3/IMG-20250823-164634.jpg',
-                'https://i.ibb.co/PvtNSz23/IMG-20250823-164638.jpg',
-                'https://i.ibb.co/hFw5LHY9/IMG-20250823-164642.jpg'
-            ],
-            bath_down: [
-                'https://i.ibb.co/hPV452h/IMG-20250823-164602.jpg'
-            ],
-            hall_up: [
-                'https://i.ibb.co/84Lf1NJY/IMG-20250823-143346.jpg',
-                'https://i.ibb.co/4gmrGj3Z/IMG-20250823-143632.jpg',
-                'https://i.ibb.co/z3rFWYD/IMG-20250823-143639.jpg',
-                'https://i.ibb.co/SWh8YsM/IMG-20250823-130317.jpg',
-                'https://i.ibb.co/G3pShqBt/IMG-20250823-130923.jpg'
-            ],
-            bed_small1: [
-                'https://i.ibb.co/Y43SjYDW/IMG-20250823-130236.jpg',
-                'https://i.ibb.co/JRxjmK5Z/IMG-20250823-130244.jpg',
-                'https://i.ibb.co/MDwcQPnD/IMG-20250823-130250.jpg'
-            ],
-            bed_small2: [
-                'https://i.ibb.co/whgrRk8W/IMG-20250823-130054.jpg',
-                'https://i.ibb.co/dJt0Y54r/IMG-20250823-130108.jpg',
-                'https://i.ibb.co/LDXvNQqw/IMG-20250823-130120.jpg',
-                'https://i.ibb.co/dSCs5Jj/IMG-20250823-130136.jpg',
-                'https://i.ibb.co/zVsdM4V9/IMG-20250823-130145.jpg',
-                'https://i.ibb.co/9m6gYRch/IMG-20250823-130150.jpg',
-                'https://i.ibb.co/Z1mjhcbN/IMG-20250823-130212.jpg'
-            ],
-            bed_main: [
-                'https://i.ibb.co/RG4KWn5d/IMG-20250823-130357.jpg',
-                'https://i.ibb.co/XrV9pY8Z/IMG-20250823-130502.jpg',
-                'https://i.ibb.co/FTdHrpJ/IMG-20250823-130607.jpg',
-                'https://i.ibb.co/9kKg5cSb/IMG-20250823-130611.jpg',
-                'https://i.ibb.co/s9hf025N/IMG-20250823-130615.jpg',
-                'https://i.ibb.co/RTGN28b3/IMG-20250823-131229.jpg',
-                'https://i.ibb.co/rSWD4G5/IMG-20250823-131235.jpg',
-                'https://i.ibb.co/pjKgN8dr/IMG-20250823-131243.jpg'
-            ],
-            bath_up: [
-                'https://i.ibb.co/fVQLWzpG/IMG-20250823-142435.jpg'
-            ]
+            front: ['https://i.ibb.co/Cp4rfnwB/1.jpg','https://i.ibb.co/wFc1L7VX/2.jpg','https://i.ibb.co/DDCjPCcd/3.jpg','https://i.ibb.co/ZRBtC2Ph/4.jpg','https://i.ibb.co/SwnwyXwT/5.jpg','https://i.ibb.co/SD6dgmZv/6.jpg'],
+            hall: ['https://i.ibb.co/W452Zm8p/IMG-20250823-164508.jpg','https://i.ibb.co/HDRrw5XH/IMG-20250823-164517.jpg','https://i.ibb.co/3mgjQYb6/IMG-20250823-164527.jpg','https://i.ibb.co/vxDNFkCp/IMG-20250823-164545.jpg','https://i.ibb.co/wNt5yBtn/IMG-20250823-164548.jpg','https://i.ibb.co/v4r6kWCX/IMG-20250823-173022.jpg'],
+            kitchen: ['https://i.ibb.co/Xx4cQLPJ/IMG-20250823-164622.jpg','https://i.ibb.co/6JyXQkJ3/IMG-20250823-164634.jpg','https://i.ibb.co/PvtNSz23/IMG-20250823-164638.jpg','https://i.ibb.co/hFw5LHY9/IMG-20250823-164642.jpg'],
+            bath_down: ['https://i.ibb.co/hPV452h/IMG-20250823-164602.jpg'],
+            hall_up: ['https://i.ibb.co/84Lf1NJY/IMG-20250823-143346.jpg','https://i.ibb.co/4gmrGj3Z/IMG-20250823-143632.jpg','https://i.ibb.co/z3rFWYD/IMG-20250823-143639.jpg','https://i.ibb.co/SWh8YsM/IMG-20250823-130317.jpg','https://i.ibb.co/G3pShqBt/IMG-20250823-130923.jpg'],
+            bed_small1: ['https://i.ibb.co/Y43SjYDW/IMG-20250823-130236.jpg','https://i.ibb.co/JRxjmK5Z/IMG-20250823-130244.jpg','https://i.ibb.co/MDwcQPnD/IMG-20250823-130250.jpg'],
+            bed_small2: ['https://i.ibb.co/whgrRk8W/IMG-20250823-130054.jpg','https://i.ibb.co/dJt0Y54r/IMG-20250823-130108.jpg','https://i.ibb.co/LDXvNQqw/IMG-20250823-130120.jpg','https://i.ibb.co/dSCs5Jj/IMG-20250823-130136.jpg','https://i.ibb.co/zVsdM4V9/IMG-20250823-130145.jpg','https://i.ibb.co/9m6gYRch/IMG-20250823-130150.jpg','https://i.ibb.co/Z1mjhcbN/IMG-20250823-130212.jpg'],
+            bed_main: ['https://i.ibb.co/RG4KWn5d/IMG-20250823-130357.jpg','https://i.ibb.co/XrV9pY8Z/IMG-20250823-130502.jpg','https://i.ibb.co/FTdHrpJ/IMG-20250823-130607.jpg','https://i.ibb.co/9kKg5cSb/IMG-20250823-130611.jpg','https://i.ibb.co/s9hf025N/IMG-20250823-130615.jpg','https://i.ibb.co/RTGN28b3/IMG-20250823-131229.jpg','https://i.ibb.co/rSWD4G5/IMG-20250823-131235.jpg','https://i.ibb.co/pjKgN8dr/IMG-20250823-131243.jpg'],
+            bath_up: ['https://i.ibb.co/fVQLWzpG/IMG-20250823-142435.jpg']
         };
 
         const mainImage = document.getElementById('mainImage');
         const thumbnailContainer = document.getElementById('thumbnail-container');
         const galleryTabs = document.querySelectorAll('.gallery-tab');
+        const loader = document.getElementById('loader');
 
         // --- Gallery Functions ---
 
-        // Function to change the main image when a thumbnail is clicked
         function changeImage(thumbnailElement, newImageSrc) {
             mainImage.src = newImageSrc;
-            // Remove 'active' class from all thumbnails in the current view
             const currentThumbnails = thumbnailContainer.querySelectorAll('.gallery-thumbnail');
             currentThumbnails.forEach(thumb => thumb.classList.remove('active'));
-            // Add 'active' class to the clicked thumbnail
             thumbnailElement.classList.add('active');
         }
 
-        // Function to filter and display thumbnails based on the selected category
         function filterGallery(category, tabElement) {
-            // Clear existing thumbnails
+            // Show loader and hide thumbnails
+            loader.style.display = 'block';
+            thumbnailContainer.style.display = 'none';
             thumbnailContainer.innerHTML = '';
-            
-            // Update active state for tabs
+
+            // Update active tab
             galleryTabs.forEach(tab => tab.classList.remove('active'));
             tabElement.classList.add('active');
 
-            // Get the images for the selected category
             const images = imageGallery[category];
-            if (!images || images.length === 0) return;
+            if (!images || images.length === 0) {
+                loader.style.display = 'none';
+                return;
+            };
 
-            // Create and append new thumbnails
+            let imagesLoaded = 0;
+            const totalImages = images.length;
+
+            // Preload images and then display them
             images.forEach((src, index) => {
-                const img = document.createElement('img');
+                const img = new Image();
                 img.src = src;
-                img.alt = `ภาพ ${category} ${index + 1}`;
-                img.className = 'gallery-thumbnail rounded w-full';
-                // Add an error handler for broken image links
-                img.onerror = function() { this.onerror=null; this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb'; };
-                // Set the onclick event to call changeImage
-                img.setAttribute('onclick', `changeImage(this, '${src}')`);
-                thumbnailContainer.appendChild(img);
+                img.onload = () => {
+                    imagesLoaded++;
+                    if (imagesLoaded === totalImages) {
+                        // All images are preloaded, now create and show them
+                        populateThumbnails(images, category);
+                    }
+                };
+                img.onerror = () => {
+                    imagesLoaded++; // Count error as loaded to not hang the loader
+                     if (imagesLoaded === totalImages) {
+                        populateThumbnails(images, category);
+                    }
+                };
             });
+        }
+        
+        function populateThumbnails(images, category) {
+            images.forEach((src, index) => {
+                const thumbImg = document.createElement('img');
+                thumbImg.src = src;
+                thumbImg.alt = `ภาพ ${category} ${index + 1}`;
+                thumbImg.className = 'gallery-thumbnail rounded w-full';
+                thumbImg.loading = 'lazy';
+                thumbImg.onerror = function() { this.onerror=null; this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb'; };
+                thumbImg.setAttribute('onclick', `changeImage(this, '${src}')`);
+                thumbnailContainer.appendChild(thumbImg);
+                
+                // Trigger the fade-in effect
+                setTimeout(() => thumbImg.classList.add('loaded'), 50 * index);
+            });
+            
+            // Hide loader and show thumbnails
+            loader.style.display = 'none';
+            thumbnailContainer.style.display = 'grid';
 
-            // Set the main image to the first image of the new category
-            // and activate the first thumbnail
             if (thumbnailContainer.firstChild) {
                 mainImage.src = images[0];
                 thumbnailContainer.firstChild.classList.add('active');
@@ -421,7 +414,6 @@
             modal.style.display = "none";
         }
 
-        // Close modal if clicked outside the image
         modal.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -429,7 +421,6 @@
         }
         
         // --- Initial Load ---
-        // Automatically display the first category ('front') when the page loads.
         window.onload = function() {
             filterGallery('front', galleryTabs[0]);
         };
