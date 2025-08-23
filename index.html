@@ -184,7 +184,7 @@
             <div class="lg:col-span-3">
                 <!-- Image Gallery -->
                 <div class="bg-white rounded-lg shadow-lg p-4 sticky top-4">
-                    <img id="mainImage" src="https://i.ibb.co/Cp4rfnwB/1.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" loading="eager" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
+                    <img id="mainImage" src="https://images2.imgbox.com/cc/90/nbhjwIeU_o.jpg" alt="ภาพหลักของบ้าน" class="w-full main-image rounded-lg mb-4 cursor-pointer" loading="eager" onerror="this.onerror=null;this.src='https://placehold.co/800x600/e2e8f0/4a5568?text=Image+Not+Found';">
                     
                     <!-- Gallery Category Tabs -->
                     <div id="gallery-tabs" class="flex flex-wrap justify-center gap-2 my-4">
@@ -192,9 +192,9 @@
                         <button class="gallery-tab" onclick="filterGallery('hall', this)">ห้องโถง</button>
                         <button class="gallery-tab" onclick="filterGallery('kitchen', this)">ห้องครัว</button>
                         <button class="gallery-tab" onclick="filterGallery('bath_down', this)">ห้องน้ำ (ล่าง)</button>
-                        <button class="gallery-tab" onclick="filterGallery('hall_up', this)">โถง (บน)</button>
-                        <button class="gallery-tab" onclick="filterGallery('bed_small1', this)">ห้องนอนเล็ก 1</button>
-                        <button class="gallery-tab" onclick="filterGallery('bed_small2', this)">ห้องนอนเล็ก 2</button>
+                        <button class="gallery-tab" onclick="filterGallery('hall_up', this)">โถงบันได</button>
+                        <button class="gallery-tab" onclick="filterGallery('bed_small1', this)">ห้องนอน 1</button>
+                        <button class="gallery-tab" onclick="filterGallery('bed_small2', this)">ห้องนอน 2</button>
                         <button class="gallery-tab" onclick="filterGallery('bed_main', this)">ห้องนอนใหญ่</button>
                         <button class="gallery-tab" onclick="filterGallery('bath_up', this)">ห้องน้ำ (บน)</button>
                     </div>
@@ -310,16 +310,18 @@
 
     <script>
         // --- Image Data ---
+        // I've updated all image links to the new, optimized versions from imgbox.com
+        // The pattern is to replace 'thumbs2' with 'images2' and '_t.jpg' with '_o.jpg' for full-size images.
         const imageGallery = {
-            front: ['https://i.ibb.co/Cp4rfnwB/1.jpg','https://i.ibb.co/wFc1L7VX/2.jpg','https://i.ibb.co/DDCjPCcd/3.jpg','https://i.ibb.co/ZRBtC2Ph/4.jpg','https://i.ibb.co/SwnwyXwT/5.jpg','https://i.ibb.co/SD6dgmZv/6.jpg'],
-            hall: ['https://i.ibb.co/W452Zm8p/IMG-20250823-164508.jpg','https://i.ibb.co/HDRrw5XH/IMG-20250823-164517.jpg','https://i.ibb.co/3mgjQYb6/IMG-20250823-164527.jpg','https://i.ibb.co/vxDNFkCp/IMG-20250823-164545.jpg','https://i.ibb.co/wNt5yBtn/IMG-20250823-164548.jpg','https://i.ibb.co/v4r6kWCX/IMG-20250823-173022.jpg'],
-            kitchen: ['https://i.ibb.co/Xx4cQLPJ/IMG-20250823-164622.jpg','https://i.ibb.co/6JyXQkJ3/IMG-20250823-164634.jpg','https://i.ibb.co/PvtNSz23/IMG-20250823-164638.jpg','https://i.ibb.co/hFw5LHY9/IMG-20250823-164642.jpg'],
-            bath_down: ['https://i.ibb.co/hPV452h/IMG-20250823-164602.jpg'],
-            hall_up: ['https://i.ibb.co/84Lf1NJY/IMG-20250823-143346.jpg','https://i.ibb.co/4gmrGj3Z/IMG-20250823-143632.jpg','https://i.ibb.co/z3rFWYD/IMG-20250823-143639.jpg','https://i.ibb.co/SWh8YsM/IMG-20250823-130317.jpg','https://i.ibb.co/G3pShqBt/IMG-20250823-130923.jpg'],
-            bed_small1: ['https://i.ibb.co/Y43SjYDW/IMG-20250823-130236.jpg','https://i.ibb.co/JRxjmK5Z/IMG-20250823-130244.jpg','https://i.ibb.co/MDwcQPnD/IMG-20250823-130250.jpg'],
-            bed_small2: ['https://i.ibb.co/whgrRk8W/IMG-20250823-130054.jpg','https://i.ibb.co/dJt0Y54r/IMG-20250823-130108.jpg','https://i.ibb.co/LDXvNQqw/IMG-20250823-130120.jpg','https://i.ibb.co/dSCs5Jj/IMG-20250823-130136.jpg','https://i.ibb.co/zVsdM4V9/IMG-20250823-130145.jpg','https://i.ibb.co/9m6gYRch/IMG-20250823-130150.jpg','https://i.ibb.co/Z1mjhcbN/IMG-20250823-130212.jpg'],
-            bed_main: ['https://i.ibb.co/RG4KWn5d/IMG-20250823-130357.jpg','https://i.ibb.co/XrV9pY8Z/IMG-20250823-130502.jpg','https://i.ibb.co/FTdHrpJ/IMG-20250823-130607.jpg','https://i.ibb.co/9kKg5cSb/IMG-20250823-130611.jpg','https://i.ibb.co/s9hf025N/IMG-20250823-130615.jpg','https://i.ibb.co/RTGN28b3/IMG-20250823-131229.jpg','https://i.ibb.co/rSWD4G5/IMG-20250823-131235.jpg','https://i.ibb.co/pjKgN8dr/IMG-20250823-131243.jpg'],
-            bath_up: ['https://i.ibb.co/fVQLWzpG/IMG-20250823-142435.jpg']
+            front: ['https://images2.imgbox.com/cc/90/nbhjwIeU_o.jpg','https://images2.imgbox.com/34/ba/q33j7CB1_o.jpg','https://images2.imgbox.com/b5/cf/wicfBTU4_o.jpg','https://images2.imgbox.com/f8/58/fZ8i2AmR_o.jpg','https://images2.imgbox.com/8a/25/LB0jG8Lf_o.jpg','https://images2.imgbox.com/32/0c/lFx2HoTk_o.jpg'],
+            hall: ['https://images2.imgbox.com/41/49/JbAPVJbM_o.jpg','https://images2.imgbox.com/53/65/mgIf9JHp_o.jpg','https://images2.imgbox.com/52/9f/8K1XLoZl_o.jpg','https://images2.imgbox.com/23/cf/iHW9MdDm_o.jpg','https://images2.imgbox.com/3a/62/w0ZGURYA_o.jpg'],
+            kitchen: ['https://images2.imgbox.com/a3/d2/wPSXmi4x_o.jpg','https://images2.imgbox.com/17/f8/CsMd5KTH_o.jpg','https://images2.imgbox.com/0f/37/Z6FPjbKY_o.jpg','https://images2.imgbox.com/24/3c/WZRalDYT_o.jpg'],
+            bath_down: ['https://images2.imgbox.com/64/26/U9SaEIYE_o.jpg'],
+            hall_up: ['https://images2.imgbox.com/d0/21/lqU2Lz0G_o.jpg','https://images2.imgbox.com/7c/fd/IXhNgtWg_o.jpg','https://images2.imgbox.com/1b/8f/EsFBeQB3_o.jpg','https://images2.imgbox.com/a9/8b/p1DFCJBQ_o.jpg'],
+            bed_small1: ['https://images2.imgbox.com/3b/43/IqNrwSKi_o.jpg','https://images2.imgbox.com/44/67/scPH8Hvi_o.jpg','https://images2.imgbox.com/d7/27/dsfPRuvz_o.jpg'],
+            bed_small2: ['https://images2.imgbox.com/90/f1/P3nqYrMJ_o.jpg','https://images2.imgbox.com/ab/0a/otGLaCCh_o.jpg','https://images2.imgbox.com/7e/ce/oLEN79aP_o.jpg','https://images2.imgbox.com/86/24/yrA9uP2j_o.jpg','https://images2.imgbox.com/e5/53/Y7TypYFB_o.jpg','https://images2.imgbox.com/a3/d1/jT9HYR0B_o.jpg','https://images2.imgbox.com/32/bc/xShC4Vfz_o.jpg'],
+            bed_main: ['https://images2.imgbox.com/7d/05/Wd3s8rmT_o.jpg','https://images2.imgbox.com/36/4d/FSjlVs0r_o.jpg','https://images2.imgbox.com/f1/10/b3DJofqd_o.jpg','https://images2.imgbox.com/25/0e/zZxvJcYK_o.jpg','https://images2.imgbox.com/2e/ea/VRofxAgC_o.jpg','https://images2.imgbox.com/9c/d2/LADz6FQE_o.jpg','https://images2.imgbox.com/78/30/nHbsgqXx_o.jpg','https://images2.imgbox.com/46/3d/bQlwyJjS_o.jpg'],
+            bath_up: ['https://images2.imgbox.com/7a/c6/Pb41EJbB_o.jpg']
         };
 
         const mainImage = document.getElementById('mainImage');
@@ -376,14 +378,18 @@
         }
         
         function populateThumbnails(images, category) {
-            images.forEach((src, index) => {
+            // Use the thumbnail version for the small previews for faster loading
+            const thumbLinks = images.map(url => url.replace('images2', 'thumbs2').replace('_o.jpg', '_t.jpg'));
+
+            thumbLinks.forEach((thumbSrc, index) => {
+                const fullSrc = images[index];
                 const thumbImg = document.createElement('img');
-                thumbImg.src = src;
+                thumbImg.src = thumbSrc;
                 thumbImg.alt = `ภาพ ${category} ${index + 1}`;
                 thumbImg.className = 'gallery-thumbnail rounded w-full';
                 thumbImg.loading = 'lazy';
                 thumbImg.onerror = function() { this.onerror=null; this.src='https://placehold.co/150x100/e2e8f0/4a5568?text=Thumb'; };
-                thumbImg.setAttribute('onclick', `changeImage(this, '${src}')`);
+                thumbImg.setAttribute('onclick', `changeImage(this, '${fullSrc}')`);
                 thumbnailContainer.appendChild(thumbImg);
                 
                 // Trigger the fade-in effect
